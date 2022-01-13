@@ -1,7 +1,7 @@
 <?php 
 session_start();
-	include("connection.php");
-	include("functions.php");
+	include("config/connection.php");
+	include("config/functions.php");
 	$user_data = check_login($con);
 ?>
 
@@ -14,6 +14,7 @@ session_start();
     <div id="mainContainer">
         <div id="navigation">
             <ul>
+                <li><a href="createCompany.php">Create Company</a></li>
                 <li>My Account</li>
                 <li>Settings</li>
                 <li><a href="logout.php">Logout</a></li>
