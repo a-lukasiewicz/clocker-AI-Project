@@ -1,5 +1,9 @@
 # clocker-AI-Project
 
+### Dokumentacja, specyfikacja wymagań
+
+<a href="https://docs.google.com/document/d/1fHaFkF9d0PannuBFFSkjcbkxALSZ4OIDDyloS9hknbk/edit"><strong>Link »</strong></a>
+
 ### Created by
 
 - Antoni Kowalski
