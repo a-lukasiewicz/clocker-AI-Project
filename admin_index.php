@@ -5,6 +5,27 @@ session_start();
 	$user_data = check_login($con);
   $company_data = check_company($con);
 
+  $uid = $user_data['user_id'];
+	
+  $times = $con->query("SELECT workrecord.`worker_id` AS 'id', SUM( `work_time` ) AS 'total',
+  CASE
+  WHEN DATE( `date` ) = DATE( CURDATE( ) )
+  THEN `work_time`
+  ELSE 0
+  END AS 'today'
+  FROM workrecord
+  INNER JOIN companyWorkers ON companyWorkers.worker_id = workrecord.worker_id
+  WHERE companyWorkers.employment_id =$uid
+  GROUP BY workrecord.worker_id");
+  
+  if(!empty($times))
+  {
+    foreach ($times as $result)
+    {
+      echo "ID pracownika: " . $result['id'] . ", przepracowane dziś: " . $result['today'] . ", przepracowane ogółem: " . $result['total'];
+    }
+  }
+  else echo "There is no data yet.";
 ?>
 
 <html>

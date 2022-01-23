@@ -3,6 +3,24 @@ session_start();
 	include("config/connection.php");
 	include("config/functions.php");
 	$user_data = check_login($con);
+
+  $uid = $user_data['user_id'];
+
+  $data = $con->query("SELECT `worker_id`, `workrecord_id`, `work_time`, `hourly_pay` , (
+    `work_time` * `hourly_pay`
+    ) AS 'total', `description` , `date`
+    FROM `workrecord`
+    WHERE `worker_id` =$uid");
+
+  if(!empty($data))
+  {
+    foreach($data as $result)
+    {
+      echo "ID pracownika: " . $result['worker_id'] . ", workrecord: " . $result['workrecord_id'] . ", czas pracy: " . $result['work_time'] . ", wynagrodzenie/h: " . $result['hourly_pay'] . ", całkowite wynagrodzenie: " . $result['total'] . ", opis: " . $result['description'] . ", data: " . $result['date'];
+    }
+  }
+  else echo "There is no data yet.";
+
 ?>
 
 <html>
