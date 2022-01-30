@@ -5,16 +5,18 @@ include("config/functions.php");
 
 $numberUsers = $con->query("SELECT COUNT('user_id') FROM users");
 $numberWork = $con->query("SELECT SUM('work_time') FROM workrecord");
-//SELECT SUM(work_time) FROM workrecord WHERE MONTH(date) = MONTH(CURDATE()) wybiera godziny z tego miesiaca
-//SELECT SUM(work_time) FROM workrecord WHERE QUARTER(date) = QUARTER(CURDATE()) z tego kwartalu
-//SELECT SUM(work_time) FROM workrecord WHERE DAY(date) = DAY(CURDATE()) z tego dnia
-if(empty($numberUsers))
+$numberWorkMonth = $con->query("SELECT SUM(work_time) FROM workrecord WHERE MONTH(date) = MONTH(CURDATE())"); //wybiera godziny z tego miesiaca
+$numberWorkQuarter = $con->query("SELECT SUM(work_time) FROM workrecord WHERE QUARTER(date) = QUARTER(CURDATE())") //z tego kwartalu
+$numberWorkDay = $con->query("SELECT SUM(work_time) FROM workrecord WHERE DAY(date) = DAY(CURDATE())") //z tego dnia
+
+$numbers = array("numberUsers","numberWork", "numberWorkMonth", "numberWorkQuarter", "numberWorkDay");
+
+foreach ($numbers as $n)
 {
-  $numberUsers = 0;
-}
-if(empty($numberWork))
-{
-  $numberWork = 0;
+    if(empty(${$n}))
+    {
+        ${$n}=0;
+    }
 }
 ?>
 
@@ -46,20 +48,27 @@ if(empty($numberWork))
       <div id="numbers">
         <ul id="numberUl">
           <li id="numberLi">Liczba użytkowników</li>
-          <li id="numberLi">Liczba godzin przepracowanych</li>
         </ul>
         <ul id="numberUl">
           <li id="numberLi">Wynosi: <font size="+10"><?php echo $numberUsers ?></font></li>
-          <li id="numberLi">Wynosi: <font size="+10"><?php echo $numberWork ?></font></li>
+        </ul>
+        <ul id="numberUl">
+          <li id="numberLi">Liczba godzin przepracowanych</font></li>
+        </ul>
+        <ul id="numberUl">
+          <li id="numberLi2">Wynosi: <font size="+10"><?php echo $numberWork ?></font> od startu aplikacji</li>
+          <li id="numberLi2">Wynosi: <font size="+10"><?php echo $numberWorkQuarter ?></font> w obecnym kwartale</li>
+          <li id="numberLi2">Wynosi: <font size="+10"><?php echo $numberWorkMonth ?></font> w obecnym miesiecu</li>
+          <li id="numberLi2">Wynosi: <font size="+10"><?php echo $numberWorkDay ?></font> dzisiaj</li>
         </ul>
       </div>
       <div id="aboutTitle">
         <h3 id="aboutH1">Na co możesz liczyć?</h3>
       </div>
       <div id="aboutUs">
-        <p id="aboutP">Nasza aplikacja wesprze Twój zespół w organizacji pracy, która często okazuje się problemem. Clocker pomoże Twojej
+        <p id="aboutP">Nasza aplikacja wesprze Twój zespół w organizacji pracy, która często okazuje się problemem. Clocker pomoże
         firmie, StartUpie, Indie Developerom albo freelancerom w uporządkowaniu czasu pracy jak i śledzenie postępów Twoich pracowników.
-        Wystarczy, że założysz konto w naszym serwisie i wszystkie funkcjonalności będą udostępnione Tobie za darmo! Nie licz na siebie,+
+        Wystarczy, że założysz konto na naszym serwisie i wszystkie funkcjonalności będą udostępnione Tobie za darmo! Nie licz na siebie,
         licz na NAS!
         </p>
       </div>
