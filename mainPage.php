@@ -6,8 +6,8 @@ include("config/functions.php");
 $numberUsers = $con->query("SELECT COUNT('user_id') FROM users");
 $numberWork = $con->query("SELECT SUM('work_time') FROM workrecord");
 $numberWorkMonth = $con->query("SELECT SUM(work_time) FROM workrecord WHERE MONTH(date) = MONTH(CURDATE())"); //wybiera godziny z tego miesiaca
-$numberWorkQuarter = $con->query("SELECT SUM(work_time) FROM workrecord WHERE QUARTER(date) = QUARTER(CURDATE())") //z tego kwartalu
-$numberWorkDay = $con->query("SELECT SUM(work_time) FROM workrecord WHERE DAY(date) = DAY(CURDATE())") //z tego dnia
+$numberWorkQuarter = $con->query("SELECT SUM(work_time) FROM workrecord WHERE QUARTER(date) = QUARTER(CURDATE())"); //z tego kwartalu
+$numberWorkDay = $con->query("SELECT SUM(work_time) FROM workrecord WHERE DAY(date) = DAY(CURDATE())"); //z tego dnia
 
 $numbers = array("numberUsers","numberWork", "numberWorkMonth", "numberWorkQuarter", "numberWorkDay");
 
