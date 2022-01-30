@@ -5,10 +5,12 @@ session_start();
 	$user_data = check_login($con);
 
   $uid = $user_data['user_id'];
-
+  $sumah = 0;
+  $sumam = 0;
+  $moneyToday = 0;
   $data = $con->query("SELECT `worker_id`, `workrecord_id`, `work_time`, `hourly_pay` , (
     `work_time` * `hourly_pay`
-    ) AS 'total', `description` , `date`
+    ) AS 'total', `description` , `date`, `project_id`
     FROM `workrecord`
     WHERE `worker_id` =$uid");
 
@@ -16,8 +18,15 @@ session_start();
   {
     foreach($data as $result)
     {
-      echo "ID pracownika: " . $result['worker_id'] . ", workrecord: " . $result['workrecord_id'] . ", czas pracy: " . $result['work_time'] . ", wynagrodzenie/h: " . $result['hourly_pay'] . ", całkowite wynagrodzenie: " . $result['total'] . ", opis: " . $result['description'] . ", data: " . $result['date'];
+      $sumah+=$result['work_time'];
+      $sumam+=$result['total'];
+      $td = date('yyyy-mm-dd');
+      if(strtotime($result['date']) == $td)
+      {
+        $moneyToday=$moneyToday+$result['total'];
+      }
     }
+    
   }
   else echo "There is no data yet.";
 
@@ -50,10 +59,11 @@ session_start();
               </svg>
             </div>
             <div>
-              <h4>EMPLOYEES</h4>
+              <h4>HOURS TODAY</h4>
               <div class="option">
-                <p>Total:</p>
-                <p>nr</p>
+                <?=
+                "<p>{$result['work_time']} hours.</p>"
+                ?>
               </div>
             </div>
           </div>
@@ -68,10 +78,11 @@ session_start();
               </svg>
             </div>
             <div class="margin">
-              <h4>TODAY</h4>
+              <h4>MONEY TODAY</h4>
               <div class="option">
-                <p>Time of work:</p>
-                <p>h</p>
+                <?=
+                "<p>Today: {$moneyToday} </p>"
+                ?>
               </div>
             </div>
           </div>
@@ -84,19 +95,42 @@ session_start();
               </svg>
             </div>
             <div class="margin">
-              <h4>TOTAL</h4>
+              <h4>TOTAL MONEY</h4>
               <div class="option">
-                <p>Total time:</p>
-                <p>h</p>
+                <?= "<p>Total money: {$sumam}</p>" ?>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div id="details">
-        <div>1</div>
-        <div>2</div>
-        <div>3</div>
+        <div>Task
+          <?php
+            foreach($data as $result)
+            {
+              echo "<br>";
+              echo $result['project_id'];
+            }
+          ?>
+        </div>
+        <div>Date
+        <?php
+            foreach($data as $result)
+            {
+              echo "<br>";
+              echo date("d.m.Y",strtotime($result['date']));
+            }
+          ?>
+        </div>
+        <div>Money
+        <?php
+            foreach($data as $result)
+            {
+              echo "<br>";
+              echo $result['total'];
+            }
+          ?>
+        </div>
       </div>
     </div>
   </body>

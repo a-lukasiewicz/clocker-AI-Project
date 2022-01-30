@@ -29,7 +29,8 @@ if(empty($numberWork))
     <div id="mainContainer">
         <div id="navigation">
             <ul>
-                <li><a href="login.php">Login</a></li>
+                <li><a href="login.php">Sign in</a></li>
+                <li><a href="signup.php">Sign up</a></li>
                 <li><a href="#numbersTitle">Numbers</a></li>
                 <li><a href="#aboutTitle">About Us</a></li>
             </ul>

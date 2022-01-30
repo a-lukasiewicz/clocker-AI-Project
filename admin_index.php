@@ -7,7 +7,12 @@ session_start();
 
   $uid = $user_data['user_id'];
 	
-  $times = $con->query("SELECT workrecord.`worker_id` AS 'id', SUM( `work_time` ) AS 'total',
+  $sumemp =0;
+  $summoney=0;
+  $sumh=0;
+  $times = $con->query("SELECT workrecord.`worker_id` AS 'id', SUM( `work_time` ) AS 'total', (
+    workrecord.`work_time` * workrecord.`hourly_pay`
+    ) AS 'totalmoney', workrecord.`date`, workrecord.`work_time`, 
   CASE
   WHEN DATE( `date` ) = DATE( CURDATE( ) )
   THEN `work_time`
@@ -22,7 +27,14 @@ session_start();
   {
     foreach ($times as $result)
     {
-      echo "ID pracownika: " . $result['id'] . ", przepracowane dziś: " . $result['today'] . ", przepracowane ogółem: " . $result['total'];
+      $sumemp +=1;
+
+      $summoney+=$result['totalmoney'];
+      $td = date('yyyy-mm-dd');
+      if(strtotime($result['date']) == $td)
+      {
+        $sumh+=$result['total'];
+      }
     }
   }
   else echo "There is no data yet.";
@@ -47,14 +59,14 @@ session_start();
         Hello ADMIN,
         <?php echo $user_data['user_name'] . " of company " . $company_data['company_name'];  ?>
       </h3>
-      <div class="select">
+      <!--<div class="select">
         <label for="select">Select project name</label>
         <select name="selectProject" id="projectName">
           <option value="project1">Project 1</option>
           <option value="project2">Project 2</option>
           <option value="project3">Project 3</option>
         </select>
-      </div>
+      </div>-->
       <div id="content">
         <div id="employees" class="cards">
           <div id="employee_card" class="card">
@@ -66,12 +78,7 @@ session_start();
             <div>
               <h4>EMPLOYEES</h4>
               <div class="option">
-                <p>Total:</p>
-                <p>1</p>
-              </div>
-              <div class="option">
-                <p>Current project:</p>
-                <p>1</p>
+                <?= "<p>{$sumemp}" ?>
               </div>
             </div>
           </div>
@@ -86,14 +93,9 @@ session_start();
               </svg>
             </div>
             <div class="margin">
-              <h4>TODAY</h4>
+              <h4>TODAY WORKTIME</h4>
               <div class="option">
-                <p>Total:</p>
-                <p>1</p>
-              </div>
-              <div class="option">
-                <p>Current project:</p>
-                <p>1</p>
+                <?= "<p>{$sumh}</p>" ?>
               </div>
             </div>
           </div>
@@ -106,23 +108,42 @@ session_start();
               </svg>
             </div>
             <div class="margin">
-              <h4>TOTAL</h4>
+              <h4>TOTAL SALARY</h4>
               <div class="option">
-                <p>Total:</p>
-                <p>1</p>
-              </div>
-              <div class="option">
-                <p>Current project:</p>
-                <p>1</p>
+                <?= "{$summoney}" ?>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div id="details">
-        <div>1</div>
-        <div>2</div>
-        <div>3</div>
+      <div>Worker ID
+          <?php
+            foreach($times as $result)
+            {
+              echo "<br>";
+              echo $result['id'];
+            }
+          ?>
+        </div>
+        <div>Date, Hour Worked
+        <?php
+            foreach($times as $result)
+            {
+              echo "<br>";
+              echo date("d.m.Y",strtotime($result['date'])). "  ".$result['work_time'];
+            }
+          ?>
+        </div>
+        <div>To Pay
+        <?php
+            foreach($times as $result)
+            {
+              echo "<br>";
+              echo $result['totalmoney'];
+            }
+          ?>
+        </div>
       </div>
     </div>
   </body>

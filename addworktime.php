@@ -9,6 +9,7 @@ session_start();
 		$work_time = $_POST['work_time'];
 		$hourly_pay = $_POST['hourly_pay'];
     	$description = $_POST['description'];
+    	$pid = $_POST['project_id'];
         $user_id = $_SESSION['user_id'];
 
 
@@ -17,7 +18,7 @@ session_start();
 
 			$company_id = random_num(20);
             $workrecord_id = random_num(20);
-			$query = "insert into workrecord(workrecord_id,worker_id,work_time,hourly_pay,description,date) values('$workrecord_id','$user_id','$work_time','$hourly_pay','$description', NOW());";
+			$query = "insert into workrecord(workrecord_id,worker_id,work_time,hourly_pay,description,date,project_id) values('$workrecord_id','$user_id','$work_time','$hourly_pay','$description', NOW(), '$pid');";
 			
 			mysqli_query($con, $query);
 			header("Location: user_index.php");
@@ -28,7 +29,6 @@ session_start();
 			echo "Please enter some valid information!";
 		}
 	}
-  
 ?>
 
 <!DOCTYPE html>
@@ -43,6 +43,7 @@ session_start();
         <h1 id="title">Add new work record</h1>
         <input id="text" type="text" name="work_time" placeholder="Hours worked e.g. 10.45" />
         <input id="text" type="text" name="hourly_pay" placeholder="Hourly pay e.g. 20.5" />
+		<input id="text" type="text" name="project_id" placeholder="Project ID" />
         <input id="text" type="text" name="description" placeholder="Description" />
 		<input id="button" type="submit" value="Add">
 		<a href="user_index.php"></a> 
