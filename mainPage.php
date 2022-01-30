@@ -3,11 +3,20 @@ session_start();
 include("config/connection.php");
 include("config/functions.php");
 
-$numberUsers = $con->query("SELECT COUNT('user_id') FROM users");
-$numberWork = $con->query("SELECT SUM('work_time') FROM workrecord");
-$numberWorkMonth = $con->query("SELECT SUM(work_time) FROM workrecord WHERE MONTH(date) = MONTH(CURDATE())"); //wybiera godziny z tego miesiaca
-$numberWorkQuarter = $con->query("SELECT SUM(work_time) FROM workrecord WHERE QUARTER(date) = QUARTER(CURDATE())"); //z tego kwartalu
-$numberWorkDay = $con->query("SELECT SUM(work_time) FROM workrecord WHERE DAY(date) = DAY(CURDATE())"); //z tego dnia
+$numberUsers = $con->query("SELECT COUNT('user_id') AS `number` FROM users");
+$numberUsers = mysqli_fetch_array($numberUsers);
+
+$numberWork = $con->query("SELECT SUM('work_time') AS `time` FROM workrecord");
+$numberWork = mysqli_fetch_array($numberWork);
+
+$numberWorkMonth = $con->query("SELECT SUM(work_time) AS `time` FROM workrecord WHERE MONTH(date) = MONTH(CURDATE())"); //wybiera godziny z tego miesiaca
+$numberWorkMonth = mysqli_fetch_array($numberWorkMonth);
+
+$numberWorkQuarter = $con->query("SELECT SUM(work_time) AS `time` FROM workrecord WHERE QUARTER(date) = QUARTER(CURDATE())"); //z tego kwartalu
+$numberWorkQuarter = mysqli_fetch_array($numberWorkQuarter);
+
+$numberWorkDay = $con->query("SELECT SUM(work_time) AS `time` FROM workrecord WHERE DAY(date) = DAY(CURDATE())"); //z tego dnia
+$numberWorkDay = mysqli_fetch_array($numberWorkDay);
 
 $numbers = array("numberUsers","numberWork", "numberWorkMonth", "numberWorkQuarter", "numberWorkDay");
 
@@ -50,16 +59,16 @@ foreach ($numbers as $n)
           <li id="numberLi">Liczba użytkowników</li>
         </ul>
         <ul id="numberUl">
-          <li id="numberLi">Wynosi: <font size="+10"><?php echo $numberUsers ?></font></li>
+          <li id="numberLi">Wynosi: <font size="+10"><?= "{$numberUsers['number']}" ?></font></li>
         </ul>
         <ul id="numberUl">
           <li id="numberLi">Liczba godzin przepracowanych</font></li>
         </ul>
         <ul id="numberUl">
-          <li id="numberLi2">Wynosi: <font size="+10"><?php echo $numberWork ?></font> od startu aplikacji</li>
-          <li id="numberLi2">Wynosi: <font size="+10"><?php echo $numberWorkQuarter ?></font> w obecnym kwartale</li>
-          <li id="numberLi2">Wynosi: <font size="+10"><?php echo $numberWorkMonth ?></font> w obecnym miesiecu</li>
-          <li id="numberLi2">Wynosi: <font size="+10"><?php echo $numberWorkDay ?></font> dzisiaj</li>
+          <li id="numberLi2">Wynosi: <font size="+10"><?php echo $numberWork['time'] ?></font> od startu aplikacji</li>
+          <li id="numberLi2">Wynosi: <font size="+10"><?php echo $numberWorkQuarter['time'] ?></font> w obecnym kwartale</li>
+          <li id="numberLi2">Wynosi: <font size="+10"><?php echo $numberWorkMonth['time'] ?></font> w obecnym miesiecu</li>
+          <li id="numberLi2">Wynosi: <font size="+10"><?php echo $numberWorkDay['time'] ?></font> dzisiaj</li>
         </ul>
       </div>
       <div id="aboutTitle">
