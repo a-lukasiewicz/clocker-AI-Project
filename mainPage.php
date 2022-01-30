@@ -6,7 +6,7 @@ include("config/functions.php");
 $numberUsers = $con->query("SELECT COUNT('user_id') AS `number` FROM users");
 $numberUsers = mysqli_fetch_array($numberUsers);
 
-$numberWork = $con->query("SELECT SUM('work_time') AS `time` FROM workrecord");
+$numberWork = $con->query("SELECT SUM(work_time) AS `time` FROM workrecord");
 $numberWork = mysqli_fetch_array($numberWork);
 
 $numberWorkMonth = $con->query("SELECT SUM(work_time) AS `time` FROM workrecord WHERE MONTH(date) = MONTH(CURDATE())"); //wybiera godziny z tego miesiaca
