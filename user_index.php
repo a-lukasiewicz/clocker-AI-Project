@@ -12,7 +12,8 @@ session_start();
     `work_time` * `hourly_pay`
     ) AS 'total', `description` , `date`, `project_id`
     FROM `workrecord`
-    WHERE `worker_id` =$uid");
+    WHERE `worker_id` =$uid
+    GROUP BY `workrecord_id`");
 
   if(!empty($data))
   {

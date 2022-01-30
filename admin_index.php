@@ -10,7 +10,7 @@ session_start();
   $sumemp =0;
   $summoney=0;
   $sumh=0;
-  $times = $con->query("SELECT workrecord.`worker_id` AS 'id', SUM( `work_time` ) AS 'total', (
+  $times = $con->query("SELECT workrecord.`workrecord_id`, workrecord.`worker_id` AS 'id', SUM( `work_time` ) AS 'total', (
     workrecord.`work_time` * workrecord.`hourly_pay`
     ) AS 'totalmoney', workrecord.`date`, workrecord.`work_time`, 
   CASE
@@ -21,7 +21,7 @@ session_start();
   FROM workrecord
   INNER JOIN companyWorkers ON companyWorkers.worker_id = workrecord.worker_id
   WHERE companyWorkers.employment_id =$uid
-  GROUP BY workrecord.worker_id");
+  GROUP BY workrecord.`workrecord_id`");
   
   if(!empty($times))
   {
