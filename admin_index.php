@@ -50,7 +50,7 @@ session_start();
       <div id="navigation">
         <ul>
           <li><a href="addUser.php">Add user to company</a></li>
-          <li>Generate CSV</li>
+          <li><a href="generatecsv.php">Generate CSV</a></li>
           <li><a href="logout.php">Logout</a></li>
         </ul>
       </div>
